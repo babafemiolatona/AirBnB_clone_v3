@@ -29,7 +29,7 @@ def delete_user(user_id):
     """Deletes a User object"""
     user = storage.get(User, user_id)
     if user:
-        user.delete()
+        storage.delete(user)
         storage.save()
         return jsonify({}), 200
     else:
@@ -47,8 +47,8 @@ def create_user():
     if 'password' not in user:
         abort(400, 'Missing password')
     user = User(**user)
-    # storage.new(user)
-    user.save()
+    storage.new(user)
+    storage.save()
     return jsonify(user.to_dict()), 201
 
 
