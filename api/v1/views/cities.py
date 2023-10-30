@@ -49,9 +49,9 @@ def create_city(state_id):
         abort(404)
     city = request.get_json()
     if not city:
-        abort(400, {"message": "Not a JSON"})
+        abort(400, description="Not a JSON")
     if 'name' not in city:
-        abort(400, {"message": "Missing name"})
+        abort(400, description="Missing name")
     city = City(state_id=state.id, **city)
     city.save()
     return jsonify(city.to_dict()), 201
@@ -65,7 +65,7 @@ def update_city(city_id):
         abort(404)
     city_json = request.get_json()
     if not city_json:
-        abort(400, {"message": "Not a JSON"})
+        abort(400, description="Not a JSON")
     city.name = city_json.get('name', city.name)
     city.save()
     return jsonify(city.to_dict()), 200
