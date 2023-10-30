@@ -67,5 +67,5 @@ def update_city(city_id):
     if not city_json:
         abort(400, {"message": "Not a JSON"})
     city.name = city_json['name', city.name]
-    storage.save()
+    city.save()
     return jsonify(city.to_dict()), 200
