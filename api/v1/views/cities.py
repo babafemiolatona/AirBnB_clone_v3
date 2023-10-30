@@ -66,6 +66,6 @@ def update_city(city_id):
     city_json = request.get_json()
     if not city_json:
         abort(400, {"message": "Not a JSON"})
-    city.name = city_json['name', city.name]
+    city.name = city_json.get('name', city.name)
     city.save()
     return jsonify(city.to_dict()), 200
