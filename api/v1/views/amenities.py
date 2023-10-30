@@ -55,24 +55,12 @@ def create_amenity():
                  strict_slashes=False)
 def update_amenity(amenity_id):
     """Updates a Amenity object"""
-    # amenity = storage.get(Amenity, amenity_id)
-    # if not amenity:
-    #     abort(404)
-    # if not request.get_json():
-    #     abort(400, 'Not a JSON')
-    # for key, value in request.get_json().items():
-    #     if key not in ['id', 'created_at', 'updated_at']:
-    #         setattr(amenity, key, value)
-    # amenity.save()
-    # return jsonify(amenity.to_dict()), 200
-    amenity = storage.get(amenity_id)
+    amenity = storage.get(Amenity, amenity_id)
     if not amenity:
         abort(404)
-    try:
-        data = request.get_json()
-    except:
+    if not request.get_json():
         abort(400, 'Not a JSON')
-    for key, value in data.items():
+    for key, value in request.get_json().items():
         if key not in ['id', 'created_at', 'updated_at']:
             setattr(amenity, key, value)
     amenity.save()
