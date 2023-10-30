@@ -60,7 +60,7 @@ def update_state(state_id):
     state_json = request.get_json()
     if not state_json:
         abort(400, 'Not a JSON')
-    state.name = state_json("name", state.name)
+    state.name = state_json.get("name", state.name)
     # for k, v in state_json.items():
     #     if k not in ['id', 'created_at', 'updated_at']:
     #         setattr(state, k, v)
