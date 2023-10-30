@@ -63,5 +63,5 @@ def update_amenity(amenity_id):
     for key, value in request.get_json().items():
         if key not in ['id', 'created_at', 'updated_at']:
             setattr(amenity, key, value)
-    amenity.save()
+    storage.save()
     return jsonify(amenity.to_dict()), 200
