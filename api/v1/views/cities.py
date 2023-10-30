@@ -66,7 +66,7 @@ def update_city(city_id):
     city_json = request.get_json()
     if not city_json:
         abort(400, description="Not a JSON")
-    city.name = city_json.get('name', city.name)
+    city.name = city_json('name', city.name)
     # for k, v in city_json.items():
     #     if k not in ['id', 'created_at', 'updated_at']:
     #         setattr(city, k, v)
