@@ -43,12 +43,12 @@ def create_amenity():
     """Creates a Amenity"""
     rsr = request.get_json()
     if not rsr:
-        abort(400, 'Not a JSON')
+        return make_response(jsonify({"error": "Not a JSON"}), 400)
     if 'name' not in amenity:
-        abort(400, 'Missing name')
+        return make_response(jsonify({"error": "Missing name"}), 400)
     amenity = Amenity(**rsr)
     amenity.save()
-    return jsonify(amenity.to_dict()), 201
+    return make_response(jsonify(amenity.to_dict()), 201)
 
 
 @app_views.route('/amenities/<amenity_id>', methods=['PUT'],
@@ -56,14 +56,14 @@ def create_amenity():
 def update_amenity(amenity_id):
     """Updates a Amenity object"""
     amenity = storage.get(Amenity, amenity_id)
-    if not amenity:
+    if amenity:
+        data = request.get_json()
+        if data is None:
+            return make_response(jsonify({"error": "Not a JSON"}), 400)
+        for key, value in data.items():
+            if key not in ['id', 'created_at', 'updated_at']:
+                setattr(amenity, key, value)
+        amenity.save()
+        return jsonify(amenity.to_dict())
+    else:
         abort(404)
-    amenity_json = request.get_json()
-    if not amenity_json:
-        abort(400, 'Not a JSON')
-    amenity.name = amenity_json.get("name", amenity.name)
-    # for k, v in amenity_json.items():
-    #     if k not in ['id', 'created_at', 'updated_at']:
-    #         setattr(amenity, k, v)
-    storage.save()
-    return jsonify(amenity.to_dict()), 200
