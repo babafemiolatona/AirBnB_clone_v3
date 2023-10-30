@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """This module creates a new view for State objects"""
-from flask import jsonify, abort, request
+from flask import jsonify, abort, request, make_response
 from api.v1.views import app_views
 from models import storage
 from models.state import State
@@ -32,7 +32,7 @@ def delete_state(state_id):
     if state:
         storage.delete(state)
         storage.save()
-        return jsonify({}), 200
+        return make_response(jsonify({}), 200)
     else:
         abort(404)
 
@@ -48,7 +48,7 @@ def create_state():
     state = State(**state)
     storage.new(state)
     storage.save()
-    return jsonify(state.to_dict()), 201
+    return make_response(jsonify(state.to_dict()), 201)
 
 
 @app_views.route('/states/<state_id>', methods=['PUT'], strict_slashes=False)
@@ -64,4 +64,4 @@ def update_state(state_id):
         if k not in ['id', 'created_at', 'updated_at']:
             setattr(state, k, v)
     storage.save()
-    return jsonify(state.to_dict()), 200
+    return make_response(jsonify(state.to_dict()), 200)
